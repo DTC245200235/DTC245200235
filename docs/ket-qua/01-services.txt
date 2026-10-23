@@ -1,0 +1,5 @@
+NAME                     IMAGE                     COMMAND                  SERVICE      CREATED             STATUS                 PORTS
+de19-news-mysql-1        mysql:8.4                 "docker-entrypoint.s…"   mysql        3 hours ago         Up 3 hours (healthy)   3306/tcp, 33060/tcp
+de19-news-nginx-1        nginx:stable-alpine       "/docker-entrypoint.…"   nginx        About an hour ago   Up About an hour       127.0.0.1:8080->80/tcp
+de19-news-phpmyadmin-1   phpmyadmin:5.2-apache     "/docker-entrypoint.…"   phpmyadmin   3 hours ago         Up 3 hours             127.0.0.1:8081->80/tcp
+de19-news-wordpress-1    wordpress:php8.3-apache   "docker-entrypoint.s…"   wordpress    About an hour ago   Up About an hour       80/tcp
