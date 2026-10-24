@@ -184,3 +184,48 @@ cập nhật file trong repository.
 
 cAdvisor hiện chạy privileged và truy cập Docker socket để thu thập thông tin hệ thống. Đây là ngoại lệ có quyền cao của thành phần giám sát, không phải container đã được harden theo nguyên tắc quyền tối thiểu.
 
+## Log tập trung — Loki và Promtail
+
+### Luồng dữ liệu
+
+Container Nginx / WordPress / MySQL
+→ Promtail → Loki → Grafana Explore.
+
+Promtail khám phá container qua Docker API, chỉ thu log
+của ba service nginx, wordpress, mysql trong project de19-news.
+
+Các nhãn chính:
+- service: tên service Docker Compose.
+- container: tên container.
+- job: docker.
+
+### Cấu hình và lưu trữ
+
+- loki/loki.yaml: cấu hình lưu log và retention.
+- promtail/promtail.yaml: cấu hình thu thập và gắn nhãn.
+- grafana/provisioning/datasources/loki.yaml: datasource Loki.
+- loki_data: lưu dữ liệu Loki.
+- promtail_positions: lưu vị trí thu thập log.
+- Loki và Promtail không publish cổng ra host.
+
+Loki có retention 24 giờ, xử lý xóa qua Compactor.
+Đây không phải giới hạn cứng dung lượng ổ đĩa.
+
+### Kiểm tra
+
+docker compose -f docker-compose.yaml exec prometheus wget -T 10 -qO- http://loki:3100/ready
+
+Kết quả mong đợi: ready.
+
+Mở Grafana tại http://localhost:3000, chọn Explore,
+datasource Loki và chạy các truy vấn trong docs/logql.md.
+
+### Giới hạn triển khai
+
+Promtail đã hết hỗ trợ từ ngày 02/03/2026.
+Bài thực hành giữ Promtail theo yêu cầu đề.
+Hướng nâng cấp thực tế là chuyển sang Grafana Alloy.
+
+Promtail hiện chạy root và truy cập Docker socket.
+Đây là ngoại lệ quyền cao của thành phần thu thập log.
+Mount socket với :ro không giới hạn Docker API thành chỉ đọc.
