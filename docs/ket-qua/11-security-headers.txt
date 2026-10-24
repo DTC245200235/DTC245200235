@@ -1,0 +1,12 @@
+HTTP/1.1 200 OK
+Server: nginx
+Date: Sat, 24 Oct 2026 16:53:57 GMT
+Content-Type: text/html; charset=UTF-8
+Connection: keep-alive
+Link: <http://localhost:8080/wp-json/>; rel="https://api.w.org/"
+Link: <http://localhost:8080/wp-json/wp/v2/pages/1387>; rel="alternate"; title="JSON"; type="application/json"
+Link: <http://localhost:8080/>; rel=shortlink
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+Referrer-Policy: strict-origin-when-cross-origin
+

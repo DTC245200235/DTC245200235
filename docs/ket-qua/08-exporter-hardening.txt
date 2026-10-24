@@ -1,0 +1,2 @@
+Container=/de19-news-nginx-exporter-1 User=65534:65534 ReadOnly=true CapDrop=["ALL"] SecurityOpt=["no-new-privileges:true"]
+Container=/de19-news-mysql-exporter-1 User=65534:65534 ReadOnly=true CapDrop=["ALL"] SecurityOpt=["no-new-privileges:true"]

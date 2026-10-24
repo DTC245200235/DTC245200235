@@ -229,3 +229,13 @@ Hướng nâng cấp thực tế là chuyển sang Grafana Alloy.
 Promtail hiện chạy root và truy cập Docker socket.
 Đây là ngoại lệ quyền cao của thành phần thu thập log.
 Mount socket với :ro không giới hạn Docker API thành chỉ đọc.
+
+## Hardening hệ thống
+
+Chi tiết cấu hình, kết quả kiểm tra và các ngoại lệ:
+[docs/hardening.md](docs/hardening.md).
+
+Các biện pháp gồm non-root cho exporter, root filesystem
+chỉ đọc, giảm capabilities, no-new-privileges, phân tách
+mạng, giới hạn cổng publish, giới hạn quyền database và
+security headers Nginx.

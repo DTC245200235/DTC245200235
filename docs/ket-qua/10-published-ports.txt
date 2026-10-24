@@ -1,0 +1,12 @@
+NAME                         IMAGE                                   COMMAND                  SERVICE          CREATED             STATUS                    PORTS
+de19-news-cadvisor-1         gcr.io/cadvisor/cadvisor:v0.49.1        "/usr/bin/cadvisor -…"   cadvisor         6 hours ago         Up 5 hours (healthy)      8080/tcp
+de19-news-grafana-1          grafana/grafana:12.4.12                 "/run.sh"                grafana          3 hours ago         Up About an hour          127.0.0.1:3000->3000/tcp
+de19-news-loki-1             grafana/loki:3.7.0                      "/usr/bin/loki -conf…"   loki             2 hours ago         Up 2 hours                3100/tcp
+de19-news-mysql-1            mysql:8.4                               "docker-entrypoint.s…"   mysql            21 hours ago        Up 44 minutes (healthy)   3306/tcp, 33060/tcp
+de19-news-mysql-exporter-1   prom/mysqld-exporter:v0.20.0            "/bin/mysqld_exporte…"   mysql-exporter   14 minutes ago      Up 14 minutes             9104/tcp
+de19-news-nginx-1            nginx:stable-alpine                     "/docker-entrypoint.…"   nginx            19 hours ago        Up 5 hours                127.0.0.1:8080->80/tcp
+de19-news-nginx-exporter-1   nginx/nginx-prometheus-exporter:1.5.1   "/usr/bin/nginx-prom…"   nginx-exporter   14 minutes ago      Up 14 minutes             
+de19-news-phpmyadmin-1       phpmyadmin:5.2-apache                   "/docker-entrypoint.…"   phpmyadmin       21 hours ago        Up 5 hours                127.0.0.1:8081->80/tcp
+de19-news-prometheus-1       prom/prometheus:v3.15.1                 "/bin/prometheus --c…"   prometheus       18 hours ago        Up 5 hours                127.0.0.1:9090->9090/tcp
+de19-news-promtail-1         grafana/promtail:3.5.0                  "/usr/bin/promtail -…"   promtail         About an hour ago   Up About an hour          
+de19-news-wordpress-1        wordpress:php8.3-apache                 "docker-entrypoint.s…"   wordpress        19 hours ago        Up 5 hours                80/tcp

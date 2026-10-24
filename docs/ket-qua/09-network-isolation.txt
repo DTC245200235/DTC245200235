@@ -1,0 +1,5 @@
+Container=/de19-news-nginx-1 Networks=de19-news_web 
+Container=/de19-news-wordpress-1 Networks=de19-news_database de19-news_web 
+Container=/de19-news-mysql-1 Networks=de19-news_database 
+Container=/de19-news-prometheus-1 Networks=de19-news_monitoring 
+Container=/de19-news-mysql-exporter-1 Networks=de19-news_database de19-news_monitoring 

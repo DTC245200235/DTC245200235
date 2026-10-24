@@ -91,6 +91,12 @@ services:
   nginx-exporter:
     image: nginx/nginx-prometheus-exporter:1.5.1
     restart: unless-stopped
+    user: "65534:65534"
+    read_only: true
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges:true
     depends_on:
       - nginx
     command:
@@ -103,6 +109,7 @@ services:
       options:
         max-size: "10m"
         max-file: "3"
+
 
   prometheus:
     image: prom/prometheus:v3.15.1
@@ -150,6 +157,12 @@ services:
   mysql-exporter:
     image: prom/mysqld-exporter:v0.20.0
     restart: unless-stopped
+    user: "65534:65534"
+    read_only: true
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges:true
     depends_on:
       mysql:
         condition: service_healthy
