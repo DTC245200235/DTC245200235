@@ -1,0 +1,1 @@
+{"status":"success","data":{"resultType":"vector","result":[{"metric":{"__name__":"mysql_up","instance":"mysql-exporter:9104","job":"mysql"},"value":[1792851806.219,"1"]}]}}

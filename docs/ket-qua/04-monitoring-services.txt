@@ -1,0 +1,10 @@
+NAME                         IMAGE                                   COMMAND                  SERVICE          CREATED         STATUS                 PORTS
+de19-news-cadvisor-1         gcr.io/cadvisor/cadvisor:v0.49.1        "/usr/bin/cadvisor -…"   cadvisor         4 hours ago     Up 2 hours (healthy)   8080/tcp
+de19-news-grafana-1          grafana/grafana:12.4.12                 "/run.sh"                grafana          9 minutes ago   Up 9 minutes           127.0.0.1:3000->3000/tcp
+de19-news-mysql-1            mysql:8.4                               "docker-entrypoint.s…"   mysql            19 hours ago    Up 2 hours (healthy)   3306/tcp, 33060/tcp
+de19-news-mysql-exporter-1   prom/mysqld-exporter:v0.20.0            "/bin/mysqld_exporte…"   mysql-exporter   2 hours ago     Up 2 hours             9104/tcp
+de19-news-nginx-1            nginx:stable-alpine                     "/docker-entrypoint.…"   nginx            17 hours ago    Up 2 hours             127.0.0.1:8080->80/tcp
+de19-news-nginx-exporter-1   nginx/nginx-prometheus-exporter:1.5.1   "/usr/bin/nginx-prom…"   nginx-exporter   15 hours ago    Up 2 hours             
+de19-news-phpmyadmin-1       phpmyadmin:5.2-apache                   "/docker-entrypoint.…"   phpmyadmin       19 hours ago    Up 2 hours             127.0.0.1:8081->80/tcp
+de19-news-prometheus-1       prom/prometheus:v3.15.1                 "/bin/prometheus --c…"   prometheus       15 hours ago    Up 2 hours             127.0.0.1:9090->9090/tcp
+de19-news-wordpress-1        wordpress:php8.3-apache                 "docker-entrypoint.s…"   wordpress        17 hours ago    Up 2 hours             80/tcp

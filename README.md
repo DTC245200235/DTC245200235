@@ -87,3 +87,100 @@ Hệ thống hiện dùng HTTP và security headers, chưa cấu hình HTTPS.
 
 Kết quả kiểm tra nằm trong docs/ket-qua.
 Ảnh minh họa nằm trong docs/chup-man-hinh.
+
+
+
+## Giám sát Prometheus và Grafana
+
+### Thành phần
+
+- Prometheus thu thập và lưu metrics.
+- cAdvisor cung cấp CPU và RAM của container.
+- Nginx Exporter đọc endpoint stub_status nội bộ.
+- MySQL Exporter cung cấp metrics database.
+- Grafana hiển thị dashboard.
+
+### Địa chỉ trong trình duyệt Ubuntu
+
+- Prometheus: http://localhost:9090
+- Prometheus Targets: http://localhost:9090/targets
+- Grafana: http://localhost:3000
+
+Tài khoản Grafana được cấu hình qua GRAFANA_ADMIN_USER và GRAFANA_ADMIN_PASSWORD trong .env khi khởi tạo lần đầu.
+Thay đổi biến mật khẩu không tự đổi mật khẩu trong database Grafana đã khởi tạo.
+
+### Cấu hình môi trường
+
+File .env.example cung cấp cấu hình mẫu:
+
+- MYSQL_DATABASE=news_db
+- MYSQL_USER=news_user
+- MYSQL_PASSWORD=SQL_PASSWORD
+- MYSQL_ROOT_PASSWORD=SQL_ROOT_PASSWORD
+- MYSQL_EXPORTER_PASSWORD=EXPORTER_PASSWORD
+- GRAFANA_ADMIN_USER=admin
+- GRAFANA_ADMIN_PASSWORD=GRAFANA_PASSWORD
+
+Khi triển khai mới:
+
+1. Sao chép mẫu bằng: cp .env.example .env
+2. Giữ nguyên tên các biến.
+3. Thay các giá trị mật khẩu mẫu bằng mật khẩu mạnh, riêng biệt.
+4. Có thể đổi database, username MySQL và username Grafana.
+5. Giới hạn quyền file bằng: chmod 600 .env
+
+Các giá trị SQL_PASSWORD, SQL_ROOT_PASSWORD, EXPORTER_PASSWORD
+và GRAFANA_PASSWORD chỉ là chỗ giữ chỗ, không dùng nguyên mẫu mà phải thay bằng password mạnh.
+
+Thông tin đăng nhập thực tế lấy từ .env, không lấy từ .env.example.
+Không đưa .env lên Git.
+
+Tài khoản exporter trong MySQL phải có mật khẩu khớp với
+MYSQL_EXPORTER_PASSWORD trong .env.
+
+Với dữ liệu đã khởi tạo, thay đổi .env không tự đổi mật khẩu
+MySQL hoặc tài khoản Grafana đã lưu trong database.
+
+### Tài khoản giám sát MySQL
+
+Khi dựng mới database, cần tạo tài khoản exporter trước khi kiểm tra MySQL Exporter.
+
+Mở MySQL bằng tài khoản root:
+
+docker compose -f docker-compose.yaml exec -e MYSQL_HISTFILE=/dev/null mysql mysql -u root -p
+
+Chạy SQL, thay CHANGE_ME bằng đúng MYSQL_EXPORTER_PASSWORD:
+
+CREATE USER 'exporter'@'%' IDENTIFIED BY 'CHANGE_ME' WITH MAX_USER_CONNECTIONS 3;
+GRANT PROCESS, REPLICATION CLIENT, SELECT ON *.* TO 'exporter'@'%';
+
+Tài khoản exporter không có quyền ghi nhưng có quyền đọc rộng.
+MySQL không publish cổng ra host.
+
+### Dashboard provisioning
+
+- Datasource: grafana/provisioning/datasources/
+- Cấu hình nạp dashboard: grafana/provisioning/dashboards/
+- Định nghĩa dashboard: grafana/dashboards/
+
+Grafana tự nạp tám dashboard vào thư mục De19.
+Nếu chỉnh dashboard trên giao diện, cần xuất lại JSON và
+cập nhật file trong repository.
+
+### Lưu trữ
+
+- prometheus_data lưu metrics.
+- grafana_data lưu database Grafana.
+- Prometheus được cấu hình retention 3 ngày và 512 MB.
+- Dung lượng thực tế có thể cao hơn do WAL và dữ liệu đang ghi.
+
+### Kiểm tra
+
+- Bốn target prometheus, nginx, cadvisor, mysql phải UP.
+- Chạy nginx_up và mysql_up trong phần Query phải bằng 1.
+- Các dashboard phải có dữ liệu thực tế.
+
+### Lưu ý quyền giám sát
+
+cAdvisor hiện chạy privileged và truy cập Docker socket để thu thập thông tin hệ thống. Đây là ngoại lệ có quyền cao của thành phần giám sát, không phải container đã được harden theo nguyên tắc quyền tối thiểu.
+
